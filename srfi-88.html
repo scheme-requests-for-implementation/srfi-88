@@ -31,17 +31,19 @@ HREF="mail-archive/maillist.html">the archive of the mailing list</A>.
 <P><UL>
 <LI>Received: 2006/04/01</LI>
 <LI>Draft: 2006/04/11 - 2006/07/10</LI>
+<LI>Revised: 2007/03/28</LI>
 </UL>
 
 <H1>Abstract</H1>
 
 <P>
 This SRFI defines <I>keyword</I> objects, a data type similar to
-Scheme symbols.  Keyword objects have a lexical syntax distinct from
-symbols (they must end in a colon) and they are self-evaluating.
+Scheme symbols.  Keyword objects have the same lexical syntax as
+symbols but they must end in a colon.  Moreover keyword objects
+are self-evaluating.
 Procedures for converting between strings and keyword objects
-(<TT>`string-&gt;keyword'</TT> and <TT>`keyword-&gt;string'</TT>)
-and a type predicate (<TT>`keyword?'</TT>) are defined.  Finally
+(<TT>string-&gt;keyword</TT> and <TT>keyword-&gt;string</TT>)
+and a type predicate (<TT>keyword?</TT>) are defined.  Finally
 this SRFI specifies the changes to the Scheme lexical syntax required
 to accomodate keywords.
 </P>
@@ -50,21 +52,22 @@ to accomodate keywords.
 
 <P>
 The motivation for keyword objects stems from the need for markers to
-identify named optional parameters, such as in <a href="http://srfi.schemers.org/srfi-89/">SRFI 89 (Optional
-parameters)</a>.  Here we mean ``parameter'' in the general sense of an
-API parameter (whether it is a syntactic or procedural API).
+identify optional named parameters, such as in
+<a href="http://srfi.schemers.org/srfi-89/">SRFI 89 (Optional positional
+and named parameters)</a>.  Here we mean ``parameter'' in the general sense
+of an API parameter (whether it is a syntactic or procedural API).
 Nevertheless we will use the terminology of procedures, namely the
 caller and callee, to identify the two sides of the API.
 </P>
 
 <P>
-Named optional parameters are useful for APIs with many parameters,
-most of which have a reasonable default value.  Using positional
-optional parameters in this case is not appropriate because it is hard
+Optional named parameters are useful for APIs with many parameters,
+most of which have a reasonable default value.  Using optional
+positional parameters in this case is not appropriate because it is hard
 to remember the position of a particular parameter P and it forces the
 caller to supply the values of parameters that come before P, whether
-it is the default value or not.  Here are a few APIs where named
-optional parameters are particularly useful:
+it is the default value or not.  Here are a few APIs where optional
+named parameters are particularly useful:
 </P>
 
 <OL>
@@ -131,10 +134,10 @@ optional parameters are particularly useful:
 </OL>
 
 <P>
-The specification of the syntax for expressing named optional
+The specification of the syntax for expressing optional named
 parameter (such as an extension to the parameter list syntax) is left
-for another SRFI, such as <a href="http://srfi.schemers.org/srfi-89/">SRFI 89 (Optional
-parameters)</a>.  This SRFI
+for another SRFI, such as <a href="http://srfi.schemers.org/srfi-89/">SRFI
+89 (Optional positional and named parameters)</a>.  This SRFI
 only specifies the keyword objects as a datatype.
 </P>
 
@@ -142,8 +145,8 @@ only specifies the keyword objects as a datatype.
 Several implementations of Scheme currently feature keyword objects,
 often modeled after the keyword objects specified in the DSSSL
 standard or Common Lisp.  Here is a partial list: Bigloo, Chicken,
-EdScheme, Gambit, Guile, Jade (an implementation of DSSSL), Kawa,
-PLT-Scheme/Swindle, STKlos, and Sizzle.
+EdScheme, Gambit, Gauche, Guile, Jade (an implementation of DSSSL),
+Kawa, MzScheme, STKlos, and Sizzle.
 </P>
 
 <P>
@@ -152,8 +155,10 @@ lexical syntax is concerned, in some implementations the colon must
 come at the end (like in DSSSL), in some implementations it must come
 at the beginning (as in Common Lisp) possibly prefixed with a hash
 sign, and in other cases either at the beginning or end.  This SRFI
-uses the trailing colon syntax because it does not conflict with the
-R5RS syntax for symbols.  The main purpose of this SRFI is to help
+uses the trailing colon syntax because it does not conflict with
+existing Scheme code which use identifiers with leading colon,
+such as <a href="http://srfi.schemers.org/srfi-42/">SRFI 42
+(Eager Comprehensions)</a>.  The main purpose of this SRFI is to help
 standardize keyword objects in these implementations and future
 implementations that support them.
 </P>
@@ -162,18 +167,18 @@ implementations that support them.
 
 <P>
 Like symbols, keywords are objects whose usefulness rests on the fact
-that two keywords are identical (in the sense of <SAMP>`eqv?'</SAMP>)
+that two keywords are identical (in the sense of <SAMP>eqv?</SAMP>)
 if and only if their names are spelled the same way.  However,
 keywords and symbols are distinct datatypes.  No keyword is identical
-to a symbol (in the sense of <SAMP>`eqv?'</SAMP>) or any object of
+to a symbol (in the sense of <SAMP>eqv?</SAMP>) or any object of
 another datatype.
 </P>
 
 <P>
 At the lexical syntax level, keywords look like symbols that end with
 a colon.  The R5RS lexical syntax category for symbols is
-<TT>&#60;identifier&#62;</TT>.  This category can start with a colon
-but cannot end with a colon unless the symbol is <SAMP>`:'</SAMP> (a
+<TT>&#60;identifier&#62;</TT>.  This category must be changed so that
+an identifier cannot end with a colon unless the symbol is <SAMP>:</SAMP> (a
 symbol consisting of only a colon).  The categories
 <TT>&#60;token&#62;</TT> and <TT>&#60;simple datum&#62;</TT> need to
 be extended and the category <TT>&#60;keyword object&#62;</TT> needs
@@ -195,15 +200,17 @@ to be added as follows:
 Note that the rule for <TT>&#60;keyword object&#62;</TT> must be valid
 even in Scheme implementations that have extended the
 <TT>&#60;identifier&#62;</TT> syntax to support quoted symbols as
-specified in SRFI 75 (R6RS Unicode data).  In other words, in such
-implementations, <SAMP>`|foo|:'</SAMP> and <SAMP>`foo:'</SAMP> are the
-same keyword, and <SAMP>`|foo:|'</SAMP> is a symbol, not a keyword,
-and <SAMP>`||:'</SAMP> is a keyword.  Using this quoted keyword
+specified in the original specification of
+<a href="http://srfi.schemers.org/srfi-75/">SRFI 75 (R6RS Unicode data)</a>.
+In other words, in such
+implementations, <SAMP>|foo|:</SAMP> and <SAMP>foo:</SAMP> are the
+same keyword, and <SAMP>|foo:|</SAMP> is a symbol, not a keyword,
+and <SAMP>||:</SAMP> is a keyword.  Using this quoted keyword
 lexical syntax all keyword objects produced by the
-<SAMP>`string-&gt;keyword'</SAMP> procedure and written with the
-<SAMP>`write'</SAMP> procedure will be read back in with the
-<SAMP>`read'</SAMP> procedure as the identical keyword (in the sense
-of <SAMP>`eqv?'</SAMP>).
+<SAMP>string-&gt;keyword</SAMP> procedure and written with the
+<SAMP>write</SAMP> procedure will be read back in with the
+<SAMP>read</SAMP> procedure as the identical keyword (in the sense
+of <SAMP>eqv?</SAMP>).
 </P>
 
 <P>
@@ -277,11 +284,10 @@ The implementation of keyword objects requires changing the reader and
 the evaluator.  Although the changes are expected to be
 straightforward they are obviously highly system dependent.  Here we
 offer a simplistic `user-level' implementation (a.k.a. kludge) that
-will work in Scheme implementations that have extended the lexical
-syntax of symbols to allow colons anywhere in the symbol, not just at
-the beginning (this is a common extension).  The following
-implementation redefines the symbol related primitives so that symbols
-ending with a colon are considered to be keywords, not symbols.
+will work in Scheme implementations that allow colons anywhere in the
+symbol.  The following implementation redefines the symbol related
+primitives so that symbols ending with a colon are considered to be
+keywords, not symbols.
 </P>
 
 <PRE>
