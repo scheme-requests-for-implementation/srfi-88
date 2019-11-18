@@ -21,7 +21,7 @@
   <body>
     <h1>SRFI 88: Keyword objects</h1>
     <p class="authors">by Marc Feeley</p>
-    <p class="status">status: <em>final</em> (2007/7/3)</p>
+    <p class="status">status: <em>final</em> (2007/7/3)</p><span class="see-also">See also <a href="/srfi-89/">SRFI 89: Optional positional and named parameters</a> and <a href="/srfi-177/">SRFI 177: Portable keyword arguments</a>.</span>
 
     <ul class="info">
       <li><a href="srfi-88.html">The SRFI Document</a></li>
@@ -30,53 +30,55 @@
       <li>
         <a href="mailto:srfi-88@srfi.schemers.org">srfi-88@<span class="antispam">nospam</span>srfi.schemers.org (subscribers only)</a></li>
       <li>
-        <form method="POST" action="https://www.simplelists.com/subscribe.php">
-          <div class="title">Subscribe to srfi-88 mailing list</div>
-          <input name="email"
-                 placeholder="email address"
-                 tabindex="1"
-                 type="email" >
-          <input name="name"
-                 placeholder="full name"
-                 tabindex="2"
-                 type="text" >
-          <p>
-            <input id="sub-digest"
-                   name="digest"
-                   tabindex="3"
-                   type="checkbox"
-                   value="digest" >
-            <label for="sub-digest">daily digest?</label></p>
-          <input class="submit"
-                 name="submit"
-                 tabindex="4"
-                 type="submit"
-                 value="Subscribe to srfi-88" >
-          <input type="hidden" name="action" value="subscribe">
-          <input type="hidden" name="list" value="srfi-88@srfi.schemers.org"></form></li>
+        <span class="firefox-column-workaround">
+          <form method="POST" action="https://www.simplelists.com/subscribe.php">
+            <div class="title">Subscribe to srfi-88 mailing list</div>
+            <input name="email"
+                   placeholder="email address"
+                   tabindex="1"
+                   type="email" >
+            <input name="name"
+                   placeholder="full name"
+                   tabindex="2"
+                   type="text" >
+            <p>
+              <input id="sub-digest"
+                     name="digest"
+                     tabindex="3"
+                     type="checkbox"
+                     value="digest" >
+              <label for="sub-digest">daily digest?</label></p>
+            <input class="submit"
+                   name="submit"
+                   tabindex="4"
+                   type="submit"
+                   value="Subscribe to srfi-88" >
+            <input type="hidden" name="action" value="subscribe">
+            <input type="hidden" name="list" value="srfi-88@srfi.schemers.org"></form></a></li>
       <li>
-        <form method="POST" action="https://www.simplelists.com/subscribe.php">
-          <p class="title">Unsubscribe from srfi-88 mailing list</p>
-          <input name="email"
-                 placeholder="email address"
-                 tabindex="5"
-                 type="email" >
-          <input class="submit"
-                 name="submit"
-                 tabindex="6"
-                 type="submit"
-                 value="Unsubscribe from srfi-88" >
-          <input name="action"
-                 type="hidden"
-                 value="unsubscribe" >
-          <input name="list"
-                 type="hidden"
-                 value="srfi-88@srfi.schemers.org"></form></li></ul>
+        <span class="firefox-column-workaround">
+          <form method="POST" action="https://www.simplelists.com/subscribe.php">
+            <p class="title">Unsubscribe from srfi-88 mailing list</p>
+            <input name="email"
+                   placeholder="email address"
+                   tabindex="5"
+                   type="email" >
+            <input class="submit"
+                   name="submit"
+                   tabindex="6"
+                   type="submit"
+                   value="Unsubscribe from srfi-88" >
+            <input name="action"
+                   type="hidden"
+                   value="unsubscribe" >
+            <input name="list"
+                   type="hidden"
+                   value="srfi-88@srfi.schemers.org"></form></a></li></ul>
     <h2>Abstract</h2>      <p>This SRFI defines <i>keyword</i> objects, a
       data type similar to Scheme symbols. Keyword objects have the same
       lexical syntax as symbols but they must end in a colon. Moreover keyword
       objects are self-evaluating. Procedures for converting between strings
-      and keyword objects (<tt>string-&gt;keyword</tt> and
-      <tt>keyword-&gt;string</tt>) and a type predicate (<tt>keyword?</tt>) are
+      and keyword objects (<code>string-&gt;keyword</code> and
+      <code>keyword-&gt;string</code>) and a type predicate (<code>keyword?</code>) are
       defined. Finally this SRFI specifies the changes to the Scheme lexical
       syntax required to accomodate keywords.</body></html>
